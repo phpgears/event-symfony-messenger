@@ -40,9 +40,12 @@ use Symfony\Component\Messenger\Middleware\HandleMessageMiddleware;
 
 $eventToHandlerMap = [];
 
-$messengerBus = new MessageBus([
-    new HandleMessageMiddleware(new EventHandlerLocator($eventToHandlerMap)),
-]);
+/*
+ * IMPORTANT! Events can go through messageBus without being handled, set second argument
+ *            on Symfony's EventHandlerLocator constructor ($allowNoHandlers) to true
+ */
+$handlerLocator = new EventHandlerLocator($eventToHandlerMap, true);
+$messengerBus = new MessageBus([new HandleMessageMiddleware($handlerLocator)]);
 
 $eventBus = new EventBus($messengerBus);
 
