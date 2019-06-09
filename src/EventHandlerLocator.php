@@ -18,6 +18,7 @@ use Gears\Event\EventHandler;
 use Gears\Event\Exception\InvalidEventException;
 use Gears\Event\Exception\InvalidEventHandlerException;
 use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Handler\HandlerDescriptor;
 use Symfony\Component\Messenger\Handler\HandlersLocatorInterface;
 
 class EventHandlerLocator implements HandlersLocatorInterface
@@ -74,7 +75,9 @@ class EventHandlerLocator implements HandlersLocatorInterface
                 };
 
                 if (!\in_array($handlerCallable, $seen, true)) {
-                    yield $alias => $seen[] = $handlerCallable;
+                    $seen[] = $handlerCallable;
+
+                    yield $alias => new HandlerDescriptor($handlerCallable);
                 }
             }
         }
@@ -91,6 +94,7 @@ class EventHandlerLocator implements HandlersLocatorInterface
      */
     final protected function getEventMap(Envelope $envelope): array
     {
+        /** @var mixed $event */
         $event = $envelope->getMessage();
 
         if (!$event instanceof Event) {

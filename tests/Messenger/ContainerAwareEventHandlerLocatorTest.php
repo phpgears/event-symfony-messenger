@@ -19,6 +19,7 @@ use Gears\Event\Symfony\Messenger\Tests\Stub\EventStub;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Handler\HandlerDescriptor;
 
 /**
  * Symfony event messenger with PSR container wrapper test.
@@ -67,7 +68,7 @@ class ContainerAwareEventHandlerLocatorTest extends TestCase
         $envelope = new Envelope(EventStub::instance());
 
         foreach ($locator->getHandlers($envelope) as $handler) {
-            $this->assertInstanceOf(\Closure::class, $handler);
+            $this->assertInstanceOf(HandlerDescriptor::class, $handler);
         }
     }
 }

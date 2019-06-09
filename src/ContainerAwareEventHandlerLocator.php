@@ -18,6 +18,7 @@ use Gears\Event\EventHandler;
 use Gears\Event\Exception\InvalidEventHandlerException;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Handler\HandlerDescriptor;
 
 class ContainerAwareEventHandlerLocator extends EventHandlerLocator
 {
@@ -67,7 +68,9 @@ class ContainerAwareEventHandlerLocator extends EventHandlerLocator
                 };
 
                 if (!\in_array($handlerCallable, $seen, true)) {
-                    yield $alias => $seen[] = $handlerCallable;
+                    $seen[] = $handlerCallable;
+
+                    yield $alias => new HandlerDescriptor($handlerCallable);
                 }
             }
         }

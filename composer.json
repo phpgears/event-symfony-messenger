@@ -24,8 +24,8 @@
   "prefer-stable": true,
   "require": {
     "php": "^7.1",
-    "phpgears/event": "~0.1",
-    "symfony/messenger": "^4.2"
+    "phpgears/event": "~0.1.3",
+    "symfony/messenger": "^4.3"
   },
   "require-dev": {
     "brainmaestro/composer-git-hooks": "^2.1",

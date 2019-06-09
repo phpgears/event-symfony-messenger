@@ -18,6 +18,7 @@ use Gears\Event\Symfony\Messenger\Tests\Stub\EventHandlerStub;
 use Gears\Event\Symfony\Messenger\Tests\Stub\EventStub;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Messenger\Envelope;
+use Symfony\Component\Messenger\Handler\HandlerDescriptor;
 
 /**
  * Symfony event messenger wrapper test.
@@ -58,7 +59,7 @@ class EventHandlerLocatorTest extends TestCase
         $envelope = new Envelope(EventStub::instance());
 
         foreach ((new EventHandlerLocator($commandMap))->getHandlers($envelope) as $handler) {
-            $this->assertInstanceOf(\Closure::class, $handler);
+            $this->assertInstanceOf(HandlerDescriptor::class, $handler);
         }
     }
 }
