@@ -13,6 +13,7 @@ declare(strict_types=1);
 
 namespace Gears\Event\Symfony\Messenger\Tests;
 
+use Gears\Event\Exception\InvalidEventHandlerException;
 use Gears\Event\Symfony\Messenger\ContainerAwareEventHandlerLocator;
 use Gears\Event\Symfony\Messenger\Tests\Stub\EventHandlerStub;
 use Gears\Event\Symfony\Messenger\Tests\Stub\EventStub;
@@ -26,19 +27,18 @@ use Symfony\Component\Messenger\Handler\HandlerDescriptor;
  */
 class ContainerAwareEventHandlerLocatorTest extends TestCase
 {
-    /**
-     * @expectedException \Gears\Event\Exception\InvalidEventHandlerException
-     * @expectedExceptionMessage Event handler must implement Gears\Event\EventHandler interface, string given
-     */
     public function testInvalidEventHandler(): void
     {
+        $this->expectException(InvalidEventHandlerException::class);
+        $this->expectExceptionMessage('Event handler must implement Gears\Event\EventHandler interface, string given');
+
         $container = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $container->expects($this->once())
+        $container->expects(static::once())
             ->method('get')
             ->with('handler')
-            ->will($this->returnValue(''));
+            ->will(static::returnValue(''));
         /* @var ContainerInterface $container */
 
         $commandMap = [EventStub::class => ['handler']];
@@ -57,10 +57,10 @@ class ContainerAwareEventHandlerLocatorTest extends TestCase
         $container = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
             ->getMock();
-        $container->expects($this->once())
+        $container->expects(static::once())
             ->method('get')
             ->with('handler')
-            ->will($this->returnValue($commandHandler));
+            ->will(static::returnValue($commandHandler));
         /* @var ContainerInterface $container */
 
         $commandMap = [EventStub::class => ['handler']];
@@ -68,7 +68,7 @@ class ContainerAwareEventHandlerLocatorTest extends TestCase
         $envelope = new Envelope(EventStub::instance());
 
         foreach ($locator->getHandlers($envelope) as $handler) {
-            $this->assertInstanceOf(HandlerDescriptor::class, $handler);
+            static::assertInstanceOf(HandlerDescriptor::class, $handler);
         }
     }
 }

@@ -13,6 +13,8 @@ declare(strict_types=1);
 
 namespace Gears\Event\Symfony\Messenger\Tests;
 
+use Gears\Event\Exception\InvalidEventException;
+use Gears\Event\Exception\InvalidEventHandlerException;
 use Gears\Event\Symfony\Messenger\EventHandlerLocator;
 use Gears\Event\Symfony\Messenger\Tests\Stub\EventHandlerStub;
 use Gears\Event\Symfony\Messenger\Tests\Stub\EventStub;
@@ -25,12 +27,11 @@ use Symfony\Component\Messenger\Handler\HandlerDescriptor;
  */
 class EventHandlerLocatorTest extends TestCase
 {
-    /**
-     * @expectedException \Gears\Event\Exception\InvalidEventException
-     * @expectedExceptionMessage Event must implement Gears\Event\Event interface, stdClass given
-     */
     public function testInvalidEvent(): void
     {
+        $this->expectException(InvalidEventException::class);
+        $this->expectExceptionMessage('Event must implement Gears\Event\Event interface, stdClass given');
+
         $envelope = new Envelope(new \stdClass());
 
         foreach ((new EventHandlerLocator([]))->getHandlers($envelope) as $handler) {
@@ -38,12 +39,11 @@ class EventHandlerLocatorTest extends TestCase
         }
     }
 
-    /**
-     * @expectedException \Gears\Event\Exception\InvalidEventHandlerException
-     * @expectedExceptionMessage Event handler must implement Gears\Event\EventHandler interface, string given
-     */
     public function testInvalidEventHandler(): void
     {
+        $this->expectException(InvalidEventHandlerException::class);
+        $this->expectExceptionMessage('Event handler must implement Gears\Event\EventHandler interface, string given');
+
         $commandMap = [EventStub::class => ['']];
         $envelope = new Envelope(EventStub::instance());
 
@@ -59,7 +59,7 @@ class EventHandlerLocatorTest extends TestCase
         $envelope = new Envelope(EventStub::instance());
 
         foreach ((new EventHandlerLocator($commandMap))->getHandlers($envelope) as $handler) {
-            $this->assertInstanceOf(HandlerDescriptor::class, $handler);
+            static::assertInstanceOf(HandlerDescriptor::class, $handler);
         }
     }
 }
