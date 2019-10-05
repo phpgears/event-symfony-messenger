@@ -64,7 +64,7 @@ class EventHandlerLocator implements HandlersLocatorInterface
             foreach ($this->handlersMap[$type] ?? [] as $alias => $handler) {
                 if (!$handler instanceof EventHandler) {
                     throw new InvalidEventHandlerException(\sprintf(
-                        'Event handler must implement %s interface, %s given',
+                        'Event handler must implement "%s" interface, "%s" given',
                         EventHandler::class,
                         \is_object($handler) ? \get_class($handler) : \gettype($handler)
                     ));
@@ -99,15 +99,15 @@ class EventHandlerLocator implements HandlersLocatorInterface
 
         if (!$event instanceof Event) {
             throw new InvalidEventException(\sprintf(
-                'Event must implement %s interface, %s given',
+                'Event must implement "%s" interface, "%s" given',
                 Event::class,
                 \is_object($event) ? \get_class($event) : \gettype($event)
             ));
         }
 
-        $class = \get_class($event);
+        $type = $event->getEventType();
 
-        return [$class => $class]
+        return [$type => $type]
             + ['*' => '*'];
     }
 }

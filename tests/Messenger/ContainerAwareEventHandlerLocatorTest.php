@@ -30,7 +30,9 @@ class ContainerAwareEventHandlerLocatorTest extends TestCase
     public function testInvalidEventHandler(): void
     {
         $this->expectException(InvalidEventHandlerException::class);
-        $this->expectExceptionMessage('Event handler must implement Gears\Event\EventHandler interface, string given');
+        $this->expectExceptionMessage(
+            'Event handler must implement "Gears\Event\EventHandler" interface, "string" given'
+        );
 
         $container = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()

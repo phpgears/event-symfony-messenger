@@ -57,7 +57,7 @@ class ContainerAwareEventHandlerLocator extends EventHandlerLocator
 
                 if (!$handler instanceof EventHandler) {
                     throw new InvalidEventHandlerException(\sprintf(
-                        'Event handler must implement %s interface, %s given',
+                        'Event handler must implement "%s" interface, "%s" given',
                         EventHandler::class,
                         \is_object($handler) ? \get_class($handler) : \gettype($handler)
                     ));

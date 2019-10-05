@@ -30,7 +30,7 @@ class EventHandlerLocatorTest extends TestCase
     public function testInvalidEvent(): void
     {
         $this->expectException(InvalidEventException::class);
-        $this->expectExceptionMessage('Event must implement Gears\Event\Event interface, stdClass given');
+        $this->expectExceptionMessage('Event must implement "Gears\Event\Event" interface, "stdClass" given');
 
         $envelope = new Envelope(new \stdClass());
 
@@ -42,7 +42,9 @@ class EventHandlerLocatorTest extends TestCase
     public function testInvalidEventHandler(): void
     {
         $this->expectException(InvalidEventHandlerException::class);
-        $this->expectExceptionMessage('Event handler must implement Gears\Event\EventHandler interface, string given');
+        $this->expectExceptionMessage(
+            'Event handler must implement "Gears\Event\EventHandler" interface, "string" given'
+        );
 
         $commandMap = [EventStub::class => ['']];
         $envelope = new Envelope(EventStub::instance());
