@@ -38,7 +38,7 @@ class EventHandlerLocator implements HandlersLocatorInterface
     public function __construct(array $handlers)
     {
         $handlers = \array_map(
-            function ($handler) {
+            function ($handler): array {
                 if (!\is_array($handler)) {
                     $handler = [$handler];
                 }
