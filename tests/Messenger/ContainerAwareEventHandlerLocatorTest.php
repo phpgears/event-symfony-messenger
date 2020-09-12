@@ -40,11 +40,11 @@ class ContainerAwareEventHandlerLocatorTest extends TestCase
         $container->expects(static::once())
             ->method('get')
             ->with('handler')
-            ->will(static::returnValue(''));
+            ->willReturn('');
         /* @var ContainerInterface $container */
 
-        $commandMap = [EventStub::class => ['handler']];
-        $locator = new ContainerAwareEventHandlerLocator($container, $commandMap);
+        $eventMap = [EventStub::class => ['handler']];
+        $locator = new ContainerAwareEventHandlerLocator($container, $eventMap);
         $envelope = new Envelope(EventStub::instance());
 
         foreach ($locator->getHandlers($envelope) as $handler) {
@@ -54,7 +54,7 @@ class ContainerAwareEventHandlerLocatorTest extends TestCase
 
     public function testEventHandler(): void
     {
-        $commandHandler = new EventHandlerStub();
+        $eventHandler = new EventHandlerStub();
 
         $container = $this->getMockBuilder(ContainerInterface::class)
             ->disableOriginalConstructor()
@@ -62,15 +62,18 @@ class ContainerAwareEventHandlerLocatorTest extends TestCase
         $container->expects(static::once())
             ->method('get')
             ->with('handler')
-            ->will(static::returnValue($commandHandler));
+            ->willReturn($eventHandler);
         /* @var ContainerInterface $container */
 
-        $commandMap = [EventStub::class => ['handler']];
-        $locator = new ContainerAwareEventHandlerLocator($container, $commandMap);
+        $event = EventStub::instance();
+
+        $eventMap = [EventStub::class => ['handler']];
+        $locator = new ContainerAwareEventHandlerLocator($container, $eventMap);
         $envelope = new Envelope(EventStub::instance());
 
         foreach ($locator->getHandlers($envelope) as $handler) {
             static::assertInstanceOf(HandlerDescriptor::class, $handler);
+            static::assertNull($handler->getHandler()($event));
         }
     }
 }

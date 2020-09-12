@@ -46,22 +46,23 @@ class EventHandlerLocatorTest extends TestCase
             'Event handler must implement "Gears\Event\EventHandler" interface, "string" given'
         );
 
-        $commandMap = [EventStub::class => ['']];
+        $eventMap = [EventStub::class => ['']];
         $envelope = new Envelope(EventStub::instance());
 
-        foreach ((new EventHandlerLocator($commandMap))->getHandlers($envelope) as $handler) {
+        foreach ((new EventHandlerLocator($eventMap))->getHandlers($envelope) as $handler) {
             continue;
         }
     }
 
     public function testEventHandler(): void
     {
-        $commandHandler = new EventHandlerStub();
-        $commandMap = [EventStub::class => $commandHandler];
+        $eventHandler = new EventHandlerStub();
+        $eventMap = [EventStub::class => $eventHandler];
         $envelope = new Envelope(EventStub::instance());
 
-        foreach ((new EventHandlerLocator($commandMap))->getHandlers($envelope) as $handler) {
+        foreach ((new EventHandlerLocator($eventMap))->getHandlers($envelope) as $handler) {
             static::assertInstanceOf(HandlerDescriptor::class, $handler);
+            static::assertNull($handler->getHandler()(EventStub::instance()));
         }
     }
 }

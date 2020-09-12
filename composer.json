@@ -24,7 +24,7 @@
   "prefer-stable": true,
   "require": {
     "php": "^7.1",
-    "phpgears/event": "~0.3.3",
+    "phpgears/event": "dev-reflection-based",
     "symfony/messenger": "^4.3|^5.0"
   },
   "require-dev": {

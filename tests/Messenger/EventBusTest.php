@@ -31,7 +31,7 @@ class EventBusTest extends TestCase
             ->getMock();
         $messengerMock->expects(static::once())
             ->method('dispatch')
-            ->will(static::returnValue(new Envelope(new \stdClass())));
+            ->willReturn(new Envelope(EventStub::instance()));
         /* @var MessageBusInterface $messengerMock */
 
         (new EventBus($messengerMock))->dispatch(EventStub::instance());

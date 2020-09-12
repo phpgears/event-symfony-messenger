@@ -32,6 +32,8 @@ require './vendor/autoload.php';
 
 ### Events Bus
 
+Just as simple as adding HandleMessageMiddleware to a Messenger's middleware list
+
 ```php
 use Gears\Event\Symfony\Messenger\EventHandlerLocator;
 use Gears\Event\Symfony\Messenger\EventBus;
@@ -52,6 +54,10 @@ $eventBus = new EventBus($messengerBus);
 /** @var \Gears\Event\Event $event */
 $eventBus->handle($event);
 ```
+
+#### Asynchronicity
+
+Simply use Symfony Messenger transports as you would with any Messenger's bus
 
 ## Contributing
 
